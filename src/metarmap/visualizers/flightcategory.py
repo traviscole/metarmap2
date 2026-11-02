@@ -38,9 +38,7 @@ def legend(settings):
                     "it's estimated from the visibility and ceiling it does report", COLORS[Category.VFR],
                     effect="pulse",
                     period=ESTIMATE_PERIOD, low=style.LIGHT_LOW),
-        (style.missing_legend("flight category, visibility or sky condition")
-         if settings.visualizer.no_flight_category_blink
-         else legend_item("No flight category, visibility or sky condition in the report", "Off")),
+        style.missing_legend("flight category, visibility or sky condition"),
     ]
     items.append(style.no_report_legend())
     return items
@@ -55,7 +53,7 @@ def look(metar: Metar, settings) -> Look:
         category = estimate_category(metar)
     color = color_for(category)
     if category is None:  # other data is reported, but nothing to tell the flight category from
-        return style.missing() if settings.visualizer.no_flight_category_blink else Look.off()
+        return style.missing()
     if estimated:
         return Look.pulse(color, period=ESTIMATE_PERIOD, low=style.LIGHT_LOW)
     return Look.solid(color)
